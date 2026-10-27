@@ -1,0 +1,5 @@
+<?php
+require_once 'config.php';
+$message='';
+try { $count=(int)db()->query('SELECT COUNT(*) FROM admins')->fetchColumn(); if($count===0){$st=db()->prepare('INSERT INTO admins(username,password_hash) VALUES(?,?)');$st->execute(['admin',password_hash('Admin123!',PASSWORD_DEFAULT)]);$message='Admin awal berhasil dibuat. Username: admin, password: Admin123!';} else {$message='Admin sudah tersedia. Demi keamanan, hapus file setup-admin.php setelah setup.';} } catch(Throwable $e){$message='Gagal setup: '.$e->getMessage().' Pastikan database.sql sudah diimpor.';}
+?><!doctype html><html lang="id"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Setup Admin</title><body style="font:16px Arial;max-width:700px;margin:60px auto;padding:20px;background:#f7f1e3;color:#3d130d"><h1>Setup Admin Kasir</h1><p><?=htmlspecialchars($message,ENT_QUOTES,'UTF-8')?></p><p><a href="login.php">Buka halaman login</a></p><strong>Segera ganti password awal dan hapus file setup-admin.php.</strong></body></html>
